@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
+use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,10 +22,10 @@ class BlogController extends AbstractController
      * @Route("/", name="index")
      * @return Response
      */
-    public function index(): Response
+    public function index(PostRepository $postRepository): Response
     {
 
-        $posts = $this->getDoctrine()->getRepository(Post::class)->getAllPosts();
+        $posts = $postRepository->getPaginatedPosts(1, 10);
         return $this->render("index.html.twig", [
             "posts" => $posts
         ]);

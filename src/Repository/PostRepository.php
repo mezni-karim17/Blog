@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use PhpParser\Node\Expr\Cast\Array_;
 
 /**
  * @extends ServiceEntityRepository<Post>
@@ -43,13 +42,18 @@ class PostRepository extends ServiceEntityRepository
 
 
     /**
+     * @param int $page
+     * @param int $limit
      * @return array
      */
-    public function getAllPosts(): array
+    public function getPaginatedPosts(int $page, int $limit): array
     {
+        // var_dump(($page - 1) * $limit);
         return $this->createQueryBuilder('p')
-            ->addSelect("c")
-            ->join("p.comments", "c")
+            // ->addSelect("c")
+            // ->join("p.comments", "c")
+            ->setMaxResults($limit)
+            ->setFirstResult(($page - 1) * $limit)
             ->getQuery()
             ->getResult();
     }
