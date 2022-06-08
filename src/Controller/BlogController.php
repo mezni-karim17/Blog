@@ -25,9 +25,70 @@ class BlogController extends AbstractController
     public function index(PostRepository $postRepository): Response
     {
 
+        $array1 = array(5, 6, 7, 8, 9);
+        $res = [];
+
+        $sum = 0;
+        foreach ($array1 as $value) {
+            $sum = $sum + $value;
+
+            $res[] = $value + 2;
+        }
+
+        foreach ($array1 as $element) {
+            $res[] = $element;
+        }
+
+
+
+
+
+        // dump($res);
+        // dd($sum);
+
+        for ($i = 0; $i < count($array1); $i++) {
+            $sum = $sum + $array1[$i];
+
+            $array1[$i] = $array1[$i] + 2;
+
+
+            echo $array1[$i] . "<br/>";
+        }
+        echo   "<br/>" . $sum . "<br/>";
+
+
         $posts = $postRepository->getPaginatedPosts(1, 10);
+
+        $tabs = [
+            "c1" => "rouge",
+            "c2" => "blanc",
+            "c3" => "green",
+            "c4" => "bananne",
+            "c5" => $posts,
+        ];
+
+        $names = [];
+        foreach ($tabs as $key => $tab) {
+            if (is_array($tab)) {
+
+                foreach ($tab as $key => $tb) {
+                    if ($tb instanceof Post) {
+                        $names[] = $tb->getTitle();
+                    }
+                }
+            }
+        }
+        dump($names);
+        die;
+        foreach ($posts as $key => $post) {
+            dump($key);
+            dump($post->getId());
+        }
+        die();
+
         return $this->render("index.html.twig", [
-            "posts" => $posts
+            "posts" => $posts,
+
         ]);
     }
 
